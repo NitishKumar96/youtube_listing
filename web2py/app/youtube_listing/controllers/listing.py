@@ -1,0 +1,6 @@
+
+
+
+
+def home():
+	return locals()
