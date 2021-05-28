@@ -1,0 +1,45 @@
+FROM python:3
+
+ENV WEB2PY_ROOT=/home/web2py
+ENV WEB2PY_VERSION=R-2.16.1
+
+# overridable environment variables
+ENV WEB2PY_PASSWORD=
+ENV WEB2PY_ADMIN_SECURITY_BYPASS=
+ENV UWSGI_OPTIONS=
+
+WORKDIR /home
+
+RUN apt-get update && apt-get install wget
+RUN pip install --upgrade pip 
+RUN pip install uwsgi 
+RUN wget http://web2py.com/examples/static/web2py_src.zip 
+RUN unzip web2py_src.zip 
+RUN rm web2py_src.zip 
+RUN mv $WEB2PY_ROOT/handlers/wsgihandler.py $WEB2PY_ROOT 
+# RUN addgroup  www-data 
+# RUN useradd www-data -g  www-data 
+RUN chown -R www-data:www-data $WEB2PY_ROOT
+
+# COPY entrypoint.sh /usr/local/bin/
+
+WORKDIR $WEB2PY_ROOT
+
+#  to connect to postgres db
+# to connect to redis instance
+RUN pip install redis
+RUN pip install pandas
+RUN pip install plotly==4.10.0
+RUN pip install pdfkit
+RUN pip install jinja2
+RUN pip install wkhtmltopdf
+RUN apt-get install -y wkhtmltopdf
+RUN pip install kaleido
+RUN pip install psycopg2
+# RUN chown -R web2py:web2py /home/web2py
+COPY entrypoint.sh /
+ENTRYPOINT ["sh", "/entrypoint.sh" ]
+CMD [ "http" ]
+USER www-data
+
+EXPOSE 8080 9090

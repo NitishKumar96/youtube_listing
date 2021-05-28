@@ -1,0 +1,58 @@
+version: '3.3'
+services:
+
+    postgres:
+        container_name: postgres
+        image: postgres
+        restart: always
+        environment:
+            POSTGRES_PASSWORD: postgres_1
+            POSTGRES_USER: postgres
+            POSTGRES_DB: youtube_listing
+        volumes:
+            - ./database:/var/lib/postgresql/data
+        ports:
+            - 5433:5432
+    
+    scraper:
+        container_name: scraper
+        build: 
+            dockerfile: Dockerfile
+            context: ./scraper
+        depends_on:
+            - postgres
+        restart: always
+        environment: 
+            # time interval in sec, after which it will make next api call
+            interval: 30
+            # amount of sec it will wait to retry either connection to db or failed api call
+            retry_delay: 10  
+            #  db details
+            db_name: youtube_listing
+            db_user: postgres
+            db_pass: postgres_1
+            # api call variables
+            quere: stocks
+            
+        ports: 
+            - "8118:8118"
+            
+    api:
+        container_name: api
+        build: 
+            dockerfile: Dockerfile
+            context: ./web2py
+        restart: always
+        depends_on:
+            - postgres
+        ports:
+            - "9999:8080"
+        command: uwsgi
+        environment:
+            - WEB2PY_PASSWORD=1234
+        volumes:    # mount the application folder to save them localy
+            - ./web2py/app:/home/web2py/applications
+            - /home/web2py/applications/admin
+            - /home/web2py/applications/welcome
+            - /home/web2py/applications/examples
+
