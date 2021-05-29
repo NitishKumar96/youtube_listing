@@ -21,20 +21,23 @@ services:
             context: ./scraper
         depends_on:
             - postgres
-        restart: always
+        # restart: always
         environment: 
             # time interval in sec, after which it will make next api call
-            scrape_interval: 30
+            scrape_interval: '30'
             # amount of sec it will wait to retry either connection to db or failed api call
-            retry_delay: 10  
+            retry_delay: '10'  
             #  db details
             db_name: youtube_listing
             db_user: postgres
             db_pass: postgres_1
+            db_host: postgres
+            db_port: "5432"
             # api call variables
-            query: new
-            api_key: AIzaSyC9ciYqwaUhrUQPPyptKJT1b4K1-wDAN7E
-
+            search_keyword: 'new songs'
+            # if file name is given single key will be ignored
+            api_key_file: keys.txt
+            # api_key: AIzaSyCHRnCoEab3KOQnYiUw2dw0iDIzfSAeNrc
             
     api:
         container_name: api
@@ -45,14 +48,10 @@ services:
         depends_on:
             - postgres
             - nginx
-        ports:
-            - "8081:80"
-        environment:
-            - WEB2PY_PASSWORD=1234
+        # ports:
+        #     - "8081:80"
         volumes:    # mount the application folder to save them localy
             - ./web2py/app/:/home/www-data/web2py/applications/
-            # - ./web2py/app/admin:/home/web2py/applications/admin
-            # - /home/web2py/applications/welcome
 
     nginx:
         container_name: nginx

@@ -21,6 +21,7 @@ EXPOSE 8080
 # ##### INSTALL ALL LIBS AND DEPENDENCIES
 #  to connect to postgres db
 RUN pip install psycopg2
+RUN pip install pandas
 # #####
 
 #  final run command
