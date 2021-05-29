@@ -138,14 +138,15 @@ from datetime import datetime
 
 db.define_table(
     'listing',
-    Field('videoId',length=50,type='string', required=True, notnull=True),
-    Field('title',length=200,type='string',required=True, notnull=True),
-    Field('channelId',length=50,type='string',required=True, notnull=True),
-    Field('channelTitle',length=200,type='string',required=True, notnull=True),
+    Field('videoId',length=100,type='string',unique=True, required=True, notnull=True),
+    Field('title',length=500,type='string',required=True, notnull=True),
+    Field('channelId',length=100,type='string',required=True, notnull=True),
+    Field('channelTitle',length=500,type='string',required=True, notnull=True),
     Field('description',length=1000,type='string',required=True, notnull=True),
     Field('thumbnail',length=1000,type='string',required=True, notnull=True),
     Field('publishTime',type='datetime',required=True, notnull=True),
-    Field('db_entry_time', type='datetime',default=datetime.now(),required=True, notnull=True)
+    Field('db_entry_time', type='datetime',default='NOW()',required=True, notnull=True),
+    Field('is_active', type='boolean',default=True,required=True, notnull=True)
 
 )
 
