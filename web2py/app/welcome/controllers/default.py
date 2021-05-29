@@ -6,6 +6,7 @@
 
 # ---- example index page ----
 def index():
+    redirect(URL('youtube_listing','listing','home'))
     response.flash = T("Hello World")
     return dict(message=T('Welcome to web2py!'))
 
