@@ -27,7 +27,7 @@ docker-compose ps
 1. HOME
 
 ```sh
-localhost:8080/youtube_listing/lisiting/home
+http://localhost:8080/youtube_listing/listing/home
 ```
 This is the page which contains top 50 latest results collected
 
