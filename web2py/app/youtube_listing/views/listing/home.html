@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> YOUTUBE LISTING DASHBOARD </title>
+	<!-- jquery -->
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	
+	<!-- BOOTSTRAP -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+	<!-- FOR DATATABLES -->
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.5.6/css/buttons.dataTables.min.css"/>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.flash.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+		    $('#youtube_listing').DataTable();
+		} );
+	</script>
+</head>
+<body>
+	<div style="padding: 2%;">
+		<div style="text-align: center;">
+			<h2> Available Listings </h2>
+		</div>
+		<div style="padding-top: 5%;">
+			<table id="youtube_listing" class="display" style="width:100%">
+		        <thead>
+		        	<!-- CODE INSIDE {{ ... }} IS PROCESSED BY WEB2PY, PYTHON -->
+		            <tr>
+		            	{{
+		            		for col in columns:
+		            			response.write("<th>%s</th>"%col.title(), escape=False)
+		            			pass
+		            	}}
+		            </tr>
+		        </thead>
+		        <tbody>
+
+		        	{{
+		        		if len(listings)>0:
+		        			for row in listings:
+		        				response.write("<tr>",escape=False)
+		        				link= 'http://www.youtube.com/watch?v='+row.videoId
+		        				response.write("<td><a href='%s'>%s</a></td>"%(link,row.videoId),escape=False)
+		        				response.write("<td>%s</td>"%row.title,escape=False)
+		        				response.write("<td>%s</td>"%row.channelId,escape=False)
+		        				response.write("<td>%s</td>"%row.channelTitle,escape=False)
+		        				response.write("<td>%s</td>"%row.description,escape=False)
+		        				response.write('<td><a href="%s">%s</a></td>'%(row.thumbnail,row.thumbnail),escape=False)
+		        				response.write("<td>%s</td>"%row.publishTime,escape=False)
+		        				response.write("</tr>",escape=False)
+		        				pass
+		        		else:
+		    				response.write("<tr>",escape=False)		
+		        			response.write("<td> NO RECORDS PRESENT </td>",escape=False)
+		    				response.write("</tr>",escape=False)
+		        			pass
+		        	}}
+		        </tbody>
+		    </table>
+		</div>
+	</div>
+	<div style=" text-align: center;">
+		<p>
+			* only top 50 rows are shown
+		</p>
+	</div>
+</body>
+</html>
