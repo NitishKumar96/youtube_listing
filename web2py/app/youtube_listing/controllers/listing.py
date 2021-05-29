@@ -40,7 +40,7 @@ def latest_listing():
 	# list of required variables
 	check_list=(limit_max,offset)
 	if all([value != None for value in check_list]):
-		if page_no >0 and page_max>0:
+		if page_no >=0 and page_max>0:
 			limit_max = max(page_no * page_max,0)
 			offset = max(limit_max - page_max,0)
 		columns=('videoId','title','channelId','channelTitle','description','thumbnail','publishTime')
@@ -75,10 +75,7 @@ def latest_listing():
 			return_dict['sql_used']=db._lastsql[0]
 		return json.dumps(return_dict)
 	else:
-		return_dict={'Error':"Insufficient data provided.",
-					 'Hint':"Refer to docs"
-					}
-		return json.dumps(return_dict)
+		return json.dumps(dict(Error="Invalid data provided."))
 
 def search_listing():
 	# get vars from request
@@ -115,7 +112,7 @@ def search_listing():
 
 
 	if len(keyword)>0:
-		if page_no >0 and page_max>0:
+		if page_no >=0 and page_max>0:
 			limit_max = max(page_no * page_max,0)
 			offset = max(limit_max - page_max,0) 
 
